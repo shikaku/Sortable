@@ -1,3 +1,5 @@
+# This repo is just a fork of 1.6.1 version but without 3e562a85fae39298be44d4a98dac1f7a853228a1 commit that had been led to an issue described here https://github.com/RubaXa/Sortable/issues/1052
+
 # Sortable
 Sortable is a <s>minimalist</s> JavaScript library for reorderable drag-and-drop lists.
 
