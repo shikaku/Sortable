@@ -88,7 +88,6 @@
 		abs = Math.abs,
 		min = Math.min,
 
-		savedInputChecked = [],
 		touchDragOverListeners = [],
 
 		_autoScroll = _throttle(function (/**Event*/evt, /**Object*/options, /**HTMLElement*/rootEl) {
@@ -229,6 +228,7 @@
 		}));
 	} catch (err) {}
 
+
 	/**
 	 * @class  Sortable
 	 * @param  {HTMLElement}  el
@@ -328,9 +328,6 @@
 				originalTarget = evt.target.shadowRoot && (evt.path && evt.path[0]) || target,
 				filter = options.filter,
 				startIndex;
-
-			_saveInputCheckedState(el);
-
 
 			// Don't trigger start event when an element is been dragged, otherwise the evt.oldindex always wrong when set option.group.
 			if (dragEl) {
@@ -1028,11 +1025,6 @@
 			putSortable =
 			activeGroup =
 			Sortable.active = null;
-
-			savedInputChecked.forEach(function (el) {
-				el.checked = true;
-			});
-			savedInputChecked.length = 0;
 		},
 
 		handleEvent: function (/**Event*/evt) {
@@ -1477,16 +1469,6 @@
 		}
 	}
 
-	function _saveInputCheckedState(root) {
-		var inputs = root.getElementsByTagName('input');
-		var idx = inputs.length;
-
-		while (idx--) {
-			var el = inputs[idx];
-			el.checked && savedInputChecked.push(el);
-		}
-	}
-
 	function _nextTick(fn) {
 		return setTimeout(fn, 0);
 	}
@@ -1501,6 +1483,16 @@
 			evt.preventDefault();
 		}
 	});
+	try {
+		window.addEventListener('test', null, Object.defineProperty({}, 'passive', {
+			get: function () {
+				captureMode = {
+					capture: false,
+					passive: false
+				};
+			}
+		}));
+	} catch (err) {}
 
 	// Export utils
 	Sortable.utils = {
